@@ -72,12 +72,33 @@ There are many useful characteristics of determinants that arise due to their na
 \]
 
 2. \textbf{Determinant Inverse Rule}
-
 \[
-\det(A) = 0 \Longleftrightarrow \nexists A^{-1}
+\det(A) \neq 0 \Longleftrightarrow \exists A^{-1}
 \]
 \[
-\text{because }
+\text{since } A \text{ can be written as a product of elementary matrices}
+\]
+\[
+A = \prod_{i=1}^{n} E_i \cdot I, \text{ and thus, }
+\det(A) = \prod_{i=1}^{n} \det(E_i) \cdot \det(I) \rightarrow \prod_{i=1}^{n} \det(E_i)
+\]
+\[
+\text{where each elementary matrix has a determinant of } 1, -1, \text{ or } k \in \mathbb{R} \cup k \neq 0.
+\]
+\[
+\text{Therefore, $\prod_{i=1}^{n} \det(E_i) \neq 0$, meaning that $\det(A) \neq 0$ if $A^{-1}$ exists.}
+\]
+\[
+\text{If } A^{-1} \text{ doesn't exist, } A \text{ can be row-reduced to a matrix with a zero on the}
+\]
+\[
+\text{diagonal. Hence, $A$ can be expressed as a product of elementary matrices and a}
+\]
+\[
+\text{matrix whose diagonal contains a zero: $\prod_{i=1}^{n} E_i \cdot I'$ where $\det(I') = 0$,}
+\]
+\[
+\text{making $\det(A) = 0$. Thus $\forall A \in \mathbb{R}^{\hspace{0.5mm}n \times n}$\hspace{-0.5mm}, $\det(A) \neq 0 \Longleftrightarrow \exists A^{-1}$}
 \]
 
 3. \textbf{Determinant Product Rule}:
@@ -273,6 +294,190 @@ Therefore, \[
 1 & 5 & 6
 \end{vmatrix}
 = -33
+\]
+
+\section*{Eigenvalues and Eigenvectors}
+
+Both eigenvalues and eigenvectors for a matrix \( A \) are defined by the equation
+\[
+A x = \lambda x,
+\]
+where \( \lambda \) is a scalar (representing the eigenvalues) and \( x \) is a vector (representing the eigenvectors). Due to the rules of conformability of matrix multiplication, the resulting dimensions of \( A x \) are the same dimensions as \( x \). Due to scalar multiplication rules, \( \lambda x \) also has the same dimensions as \( x \). This equation can be manipulated:
+
+\begin{enumerate}
+    \item \( A x - \lambda x = \mathbf{0} \)
+    \item \( x (A - \lambda) = \mathbf{0} \)
+    \item \( x (A - \lambda I) = \mathbf{0} \)
+\end{enumerate}
+
+Eigenvectors are never zero vectors by convention because, if they were, the eigenvalues could be any element of the complex numbers, rendering both eigenvalues and eigenvectors vacuous. If \( (A - \lambda I)^{-1} \) exists, then we can manipulate the equation further:
+
+\begin{enumerate}
+    \item \( x (A - \lambda I)(A - \lambda I)^{-1} = \mathbf{0} (A - \lambda I)^{-1} \)
+    \item \( x I = \mathbf{0} \)
+    \item \( x = \mathbf{0} \)
+\end{enumerate}
+
+Therefore, if \( (A - \lambda I)^{-1} \) exists, \( x = \mathbf{0} \), but since \( x \neq \mathbf{0} \), \( (A - \lambda I)^{-1} \) must not exist. (Note that \( A A^{-1} = I \))
+
+The inverse of a matrix doesn't exist when its determinant is equal to zero. Therefore,
+\[
+\det(A - \lambda I) = 0.
+\]
+
+We've covered how to compute determinants through cofactor expansion, but let's go over it with an arbitrary $A \in \mathbb{R}^{\hspace{0.5mm}n \times n}$
+
+\[
+A = \begin{pmatrix} 4 & 9 & 2 \\ 0 & 0 & 3 \\ 1 & 5 & 6 \end{pmatrix}
+\]
+
+To find the eigenvalues, compute \( \det(A - \lambda I) = 0 \), where
+\[
+A - \lambda I = \begin{pmatrix} 4 - \lambda & 9 & 2 \\ 0 & -\lambda & 3 \\ 1 & 5 & 6 - \lambda \end{pmatrix}.
+\]
+
+The determinant of \( A - \lambda I \) is:
+\[
+\det(A - \lambda I) = (4 - \lambda) \begin{vmatrix} -\lambda & 3 \\ 5 & 6 - \lambda \end{vmatrix} - 9 \begin{vmatrix} 0 & 3 \\ 1 & 6 - \lambda \end{vmatrix} + 2 \begin{vmatrix} 0 & -\lambda \\ 1 & 5 \end{vmatrix}.
+\]
+
+Expanding these determinants, we get:
+\[
+\det(A - \lambda I) = (4 - \lambda)(-\lambda (6 - \lambda) - 3 \cdot 5) - 9(0 \cdot (6 - \lambda) - 3 \cdot 1) + 2(0 \cdot 5 - (-\lambda) \cdot 1).
+\]
+
+And since $\det(A - \lambda I) = 0$, solving this polynomial for its roots produces our eigenvalue solutions:
+
+\[
+\lambda_1 \approx \:-1.42078\dots ,\:\lambda_2\approx \:2.64737\dots ,\:\lambda_3\approx \:8.77341
+\]
+
+Now, for each eigenvalue \( \lambda_i \), substitute it back into \( (A - \lambda_i I) x = \vec{0} \) and solve the resulting system of linear equations for the eigenvector \( x \). This is generally done using Gaussian Elimination, but can also be done by the typical computation of systems of equations.
+
+\vspace{1mm}
+To do so, we 
+\begin{enumerate}
+    \item Substitute the respective eigenvalue into the matrix \( A - \lambda I \).
+    \item Multiply \( A - \lambda I \) by the variable vector (i.e., \( x, y, z, \dots \)), set the resulting product matrix equal to the zero vector, and represent the matrix equation as linear equations.
+    \item Solve the resulting system of equations for each variable.
+\end{enumerate}
+
+\vspace{2mm}
+
+Doing this for $A$:
+
+\vspace{4mm}
+
+For $x_1$,
+
+\[
+1. \hspace{4mm} A - \lambda_1 I = \begin{pmatrix} 4 + 1.42078 & 9 & 2 \\ 0 & 1.42078 & 3 \\ 1 & 5 & 6 + 1.42078 \end{pmatrix}
+\]
+
+\[
+\rightarrow \hspace{4mm} A - \lambda_1 I \approx \begin{pmatrix} 5.42078 & 9 & 2 \\ 0 & 1.42078 & 3 \\ 1 & 5 & 7.42078 \end{pmatrix}.
+\]
+
+\vspace{2mm}
+
+\[
+2. \hspace{4mm} \begin{pmatrix} 5.42078 & 9 & 2 \\ 0 & 1.42078 & 3 \\ 1 & 5 & 7.42078 \end{pmatrix} \begin{pmatrix} x \\ y \\ z \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}
+\]
+\[
+\rightarrow \hspace{4mm} \begin{pmatrix} 5.42078 x + 9 y + 2 z \\ 1.42078 y + 3 z \\ x + 5 y + 7.42078 z \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}
+\]
+
+\[
+\hspace{-4mm} \rightarrow \hspace{4mm} 5.42078 x + 9 y + 2 z = 0,
+\]
+\[
+\hspace{-2.5mm} \hspace{-1mm} 1.42078 y + 3 z = 0,
+\]
+\[
+\hspace{-2mm} \hspace{5mm} x + 5 y + 7.42078 z = 0.
+\]
+
+\[
+\text{\hspace{-4mm} 3. \hspace{2mm} Solving the system of equations, we get $x = 3.11$, $y = 1$, and $z = 2.924.$}
+\]
+
+\[
+\text{Thus, $x_1 = \begin{pmatrix} 3.11 \\ 1 \\ 2.924 \end{pmatrix}$}
+\]
+For \( x_2 \),
+
+\[
+1. \hspace{4mm} A - \lambda_2 I = \begin{pmatrix} 4 - 2.64737 & 9 & 2 \\ 0 & 2.64737 & 3 \\ 1 & 5 & 6 - 2.64737 \end{pmatrix}
+\]
+
+\[
+\rightarrow \hspace{4mm} A - \lambda_2 I \approx \begin{pmatrix} 1.35263 & 9 & 2 \\ 0 & 2.64737 & 3 \\ 1 & 5 & 3.35263 \end{pmatrix}.
+\]
+
+\vspace{2mm}
+
+\[
+2. \hspace{4mm} \begin{pmatrix} 1.35263 & 9 & 2 \\ 0 & 2.64737 & 3 \\ 1 & 5 & 3.35263 \end{pmatrix} \begin{pmatrix} x \\ y \\ z \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}
+\]
+\[
+\rightarrow \hspace{4mm} \begin{pmatrix} 1.35263 x + 9 y + 2 z \\ 2.64737 y + 3 z \\ x + 5 y + 3.35263 z \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}
+\]
+
+\[
+\hspace{-4mm} \rightarrow \hspace{4mm} 1.35263 x + 9 y + 2 z = 0,
+\]
+\[
+\hspace{-2.5mm} \hspace{-1mm} 2.64737 y + 3 z = 0,
+\]
+\[
+\hspace{-2mm} \hspace{5mm} x + 5 y + 3.35263 z = 0.
+\]
+
+\[
+\text{\hspace{-4mm} 3. \hspace{2mm} Solving the system of equations, we get \( x = -6.41 \), \( y = 1 \), and \( z = -0.882 \).}
+\]
+
+\[
+\text{Thus, \( x_2 = \begin{pmatrix} -6.41 \\ 1 \\ -0.882 \end{pmatrix} \)}
+\]
+
+\vspace{10mm}
+
+For \( x_3 \),
+
+\[
+1. \hspace{4mm} A - \lambda_3 I = \begin{pmatrix} 4 - 8.77341 & 9 & 2 \\ 0 & 8.77341 & 3 \\ 1 & 5 & 6 - 8.77341 \end{pmatrix}
+\]
+
+\[
+\rightarrow \hspace{4mm} A - \lambda_3 I \approx \begin{pmatrix} -4.77341 & 9 & 2 \\ 0 & 8.77341 & 3 \\ 1 & 5 & -2.77341 \end{pmatrix}.
+\]
+
+\vspace{2mm}
+
+\[
+2. \hspace{4mm} \begin{pmatrix} -4.77341 & 9 & 2 \\ 0 & 8.77341 & 3 \\ 1 & 5 & -2.77341 \end{pmatrix} \begin{pmatrix} x \\ y \\ z \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}
+\]
+\[
+\rightarrow \hspace{4mm} \begin{pmatrix} -4.77341 x + 9 y + 2 z \\ 8.77341 y + 3 z \\ x + 5 y - 2.77341 z \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}
+\]
+
+\[
+\hspace{-4mm} \rightarrow \hspace{4mm} -4.77341 x + 9 y + 2 z = 0,
+\]
+\[
+\hspace{-2.5mm} \hspace{-1mm} 8.77341 y + 3 z = 0,
+\]
+\[
+\hspace{-2mm} \hspace{5mm} x + 5 y - 2.77341 z = 0.
+\]
+
+\[
+\text{\hspace{-4mm} 3. \hspace{2mm} Solving the system of equations, we get \( x = -0.822 \), \( y = 1 \), and \( z = -2.924 \).}
+\]
+
+\[
+\text{Thus, \( x_3 = \begin{pmatrix} -0.822 \\ 1 \\ -2.924 \end{pmatrix} \)}
 \]
 
 \end{document}
